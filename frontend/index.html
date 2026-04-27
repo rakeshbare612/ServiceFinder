@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Finder - Premium Plumber Booking</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-logo">
+                <i class="fas fa-wrench"></i> Service Finder
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link active" data-page="home">Home</a></li>
+                <li id="profileNavBtn" style="display:none;"><a href="#profile" class="nav-link" data-page="profile">Profile</a></li>
+                <li id="workerNavBtn" style="display:none;"><a href="#dashboard" class="nav-link" data-page="workerDashboard">Worker</a></li>
+                <li id="adminNavBtn" style="display:none;"><a href="#admin" class="nav-link" data-page="adminDashboard">Admin</a></li>
+                <li id="loginNavBtn"><a href="#login" class="nav-link" data-page="login">Login</a></li>
+                <li id="bookingsNavBtn" style="display:none;"><a href="#bookings" class="nav-link" data-page="bookings">My Bookings</a></li>
+                <li id="logoutNavBtn" style="display:none;"><a href="#logout" class="nav-link logout-link">Logout</a></li>
+                <li><button id="themeToggle" class="theme-toggle" title="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home-page" class="page active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Find Premium Plumbers Near You</h1>
+                <p>Quick, reliable, and affordable plumbing services</p>
+                <div class="search-container">
+                    <input type="text" id="searchPlumber" class="search-input" placeholder="Search plumber by location...">
+                    <button class="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Advanced Filters Section -->
+        <section class="filters-section">
+            <div class="container">
+                <div class="filters-container">
+                    <h3>Filter Results</h3>
+                    <div class="filters-grid">
+                        <div class="filter-group">
+                            <label for="priceFilter">Price Range</label>
+                            <div class="price-range-container">
+                                <input type="range" id="priceMin" class="price-slider" min="100" max="1000" value="100">
+                                <input type="range" id="priceMax" class="price-slider" min="100" max="1000" value="1000">
+                                <div class="price-display">
+                                    ₹<span id="priceMinDisplay">100</span> - ₹<span id="priceMaxDisplay">1000</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="filter-group">
+                            <label for="ratingFilter">Minimum Rating</label>
+                            <select id="ratingFilter" class="filter-select">
+                                <option value="0">All Ratings</option>
+                                <option value="3">3+ Stars</option>
+                                <option value="3.5">3.5+ Stars</option>
+                                <option value="4">4+ Stars</option>
+                                <option value="4.5">4.5+ Stars</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <label for="experienceFilter">Experience</label>
+                            <select id="experienceFilter" class="filter-select">
+                                <option value="0">All Levels</option>
+                                <option value="2">2+ Years</option>
+                                <option value="5">5+ Years</option>
+                                <option value="10">10+ Years</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <label for="verifiedFilter">Verification</label>
+                            <select id="verifiedFilter" class="filter-select">
+                                <option value="">All Providers</option>
+                                <option value="verified">Verified Only</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary" id="resetFiltersBtn">Reset Filters</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Demo Professionals Section -->
+        <section class="demo-services-section">
+            <div class="container">
+                <div class="section-heading">
+                    <p class="subheading">Top talent</p>
+                    <h2>Explore Demo Professionals</h2>
+                    <p class="section-copy">See example listings for plumbers, electricians, painters and more.</p>
+                </div>
+                <div id="demoServicesContainer" class="services-grid"></div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section class="services-section">
+            <div class="container">
+                <h2>Available Plumbers</h2>
+                <div id="servicesContainer" class="services-grid">
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                        <p>Loading plumbers...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Login/Register Page -->
+    <div id="login-page" class="page">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-toggle">
+                    <button class="toggle-btn active" id="loginToggle">Login</button>
+                    <button class="toggle-btn" id="registerToggle">Register</button>
+                </div>
+
+                <!-- Login Form -->
+                <form id="loginForm" class="auth-form active">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <p class="auth-note">Sample admin: admin@service.com / Admin@123<br>Sample worker: worker1@service.com / Worker@123</p>
+                </form>
+
+                <!-- Register Form -->
+                <form id="registerForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="registerName">Full Name</label>
+                        <input type="text" id="registerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email</label>
+                        <input type="email" id="registerEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <input type="password" id="registerPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Worker Dashboard Page -->
+    <div id="worker-dashboard-page" class="page">
+        <div class="container">
+            <h1>Worker Dashboard</h1>
+            <p class="section-copy">Manage your assigned bookings and update status easily.</p>
+            <div id="workerStats" class="stats-grid worker-stats"></div>
+            <div id="workerBookingsContainer" class="bookings-grid">
+                <p class="no-data">No bookings assigned yet.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard Page -->
+    <div id="admin-dashboard-page" class="page">
+        <div class="container">
+            <h1>Admin Dashboard</h1>
+            <p class="section-copy">Add or remove workers, review performance, and view user complaints.</p>
+            <div id="adminStats" class="stats-grid admin-stats"></div>
+
+            <section class="admin-panel">
+                <div class="admin-panel-card glass-effect">
+                    <h2>Add New Worker</h2>
+                    <form id="addWorkerForm" class="admin-form">
+                        <div class="form-group">
+                            <label for="workerName">Worker Name</label>
+                            <input type="text" id="workerName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="workerEmail">Login Email</label>
+                            <input type="email" id="workerEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="workerPassword">Login Password</label>
+                            <input type="text" id="workerPassword" required placeholder="Worker@123">
+                        </div>
+                        <div class="form-group">
+                            <label for="workerPhone">Phone</label>
+                            <input type="text" id="workerPhone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="workerAddress">Address</label>
+                            <input type="text" id="workerAddress" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="workerSkill">Skills</label>
+                            <input type="text" id="workerSkill" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="workerPrice">Hourly Price</label>
+                            <input type="number" id="workerPrice" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Worker</button>
+                    </form>
+                </div>
+
+                <div class="admin-panel-card glass-effect">
+                    <h2>Workers</h2>
+                    <div id="adminWorkersContainer" class="admin-list"></div>
+                </div>
+            </section>
+
+            <section class="admin-panel">
+                <div class="admin-panel-card glass-effect">
+                    <h2>Complaints</h2>
+                    <div id="adminComplaintsContainer" class="admin-list"></div>
+                </div>
+            </section>
+
+            <div class="admin-note">
+                <p><strong>Admin sample login:</strong> admin@service.com / Admin@123</p>
+                <p><strong>Worker sample login:</strong> worker1@service.com / Worker@123</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Page -->
+    <div id="profile-page" class="page">
+        <section class="profile-hero">
+            <div class="profile-hero-card glass-effect">
+                <div class="profile-user-info">
+                    <div class="profile-user-avatar">
+                        <img id="profileAvatar" src="https://i.pravatar.cc/150?img=12" alt="User Avatar">
+                    </div>
+                    <div class="profile-user-text">
+                        <p class="eyebrow">Welcome back</p>
+                        <h1 id="profileUserName">User Name</h1>
+                        <p id="profileUserEmail">user@example.com</p>
+                        <div class="profile-badges">
+                            <span class="badge badge-primary">Verified user</span>
+                            <span class="badge badge-secondary">Member since 2024</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-quick-actions">
+                    <button class="btn btn-primary" onclick="navigateTo('home')">Browse Plumbers</button>
+                    <button class="btn btn-secondary" onclick="navigateTo('bookings')">My Bookings</button>
+                </div>
+            </div>
+        </section>
+        <section class="profile-stats">
+            <div class="stats-grid">
+                <div class="stat-card glass-effect">
+                    <span class="stat-value" id="profileTotalBookings">0</span>
+                    <span class="stat-label">Bookings</span>
+                </div>
+                <div class="stat-card glass-effect">
+                    <span class="stat-value" id="profileViewedProviders">8</span>
+                    <span class="stat-label">Plumbers</span>
+                </div>
+                <div class="stat-card glass-effect">
+                    <span class="stat-value" id="profileRating">4.7★</span>
+                    <span class="stat-label">Average Rating</span>
+                </div>
+                <div class="stat-card glass-effect">
+                    <span class="stat-value" id="profileLocation">Maharashtra</span>
+                    <span class="stat-label">Service Area</span>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Plumber Details Page -->
+    <div id="details-page" class="page">
+        <div class="container">
+            <button class="back-btn" id="backBtn"><i class="fas fa-arrow-left"></i> Back</button>
+            <div class="details-content">
+                <!-- Plumber Card -->
+                <div class="plumber-details-card">
+                    <div class="details-image">
+                        <img id="detailsImage" src="" alt="Plumber">
+                    </div>
+                    <div class="details-info">
+                        <h1 id="detailsName"></h1>
+                        <div class="rating-stars" id="detailsRating"></div>
+                        <p id="detailsLocation"></p>
+                        <p id="detailsPrice"></p>
+                    </div>
+                </div>
+
+                <!-- ID Card Section -->
+                <div class="id-card-section">
+                    <h2>Professional ID Card</h2>
+                    <div class="id-card">
+                        <div class="id-header">
+                            <div class="id-logo">SF</div>
+                            <div class="id-verified">
+                                <i class="fas fa-check-circle"></i> Verified
+                            </div>
+                        </div>
+                        <div class="id-photo">
+                            <img id="idPhoto" src="" alt="Photo">
+                        </div>
+                        <div class="id-details">
+                            <div class="id-row">
+                                <span class="id-label">Name:</span>
+                                <span class="id-value" id="idName"></span>
+                            </div>
+                            <div class="id-row">
+                                <span class="id-label">Worker ID:</span>
+                                <span class="id-value" id="idWorkerID"></span>
+                            </div>
+                            <div class="id-row">
+                                <span class="id-label">Phone:</span>
+                                <span class="id-value" id="idPhone"></span>
+                            </div>
+                            <div class="id-row">
+                                <span class="id-label">Address:</span>
+                                <span class="id-value" id="idAddress"></span>
+                            </div>
+                            <div class="id-row">
+                                <span class="id-label">Skills:</span>
+                                <span class="id-value" id="idSkills"></span>
+                            </div>
+                            <div class="id-row">
+                                <span class="id-label">Experience:</span>
+                                <span class="id-value" id="idExperience"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Portfolio Gallery Section -->
+                <div class="portfolio-section">
+                    <h2>Our Work</h2>
+                    <div class="portfolio-gallery" id="portfolioGallery">
+                        <!-- Portfolio images will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Booking Section -->
+                <div class="booking-section">
+                    <h2>Book Plumber</h2>
+                    <form id="bookingForm" class="booking-form">
+                        <div class="form-group">
+                            <label for="bookingDate">Select Date</label>
+                            <input type="date" id="bookingDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bookingTime">Select Time</label>
+                            <input type="time" id="bookingTime" required>
+                        </div>
+                        <button type="button" class="btn btn-secondary" id="shareLocationBtn">
+                            <i class="fas fa-map-marker-alt"></i> Share Live Location
+                        </button>
+                        <div id="locationStatus"></div>
+                        <button type="submit" class="btn btn-primary">Confirm Booking</button>
+                    </form>
+                </div>
+
+                <!-- Reviews Section -->
+                <div id="reviewsSection" class="reviews-section">
+                    <div class="reviews-header">
+                        <h3>Customer Reviews</h3>
+                    </div>
+                    
+                    <!-- Rating Summary -->
+                    <div class="reviews-rating-summary">
+                        <div class="rating-average">
+                            <div class="big-number" id="avgRating">4.7</div>
+                            <div class="stars" id="ratingStars">★★★★☆</div>
+                            <div style="color: var(--text-light); font-size: 0.9rem;" id="reviewCount">Based on 45 reviews</div>
+                        </div>
+                        <div class="rating-breakdown" id="ratingBreakdown">
+                            <!-- Filled dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Review Form -->
+                    <div id="reviewFormContainer" class="review-form" style="display: none;">
+                        <h4>Share Your Experience</h4>
+                        <form id="submitReviewForm">
+                            <div class="form-group-review">
+                                <label>Rating:</label>
+                                <div class="rating-input" id="ratingInput">
+                                    <span class="star-input" data-rating="1">★</span>
+                                    <span class="star-input" data-rating="2">★</span>
+                                    <span class="star-input" data-rating="3">★</span>
+                                    <span class="star-input" data-rating="4">★</span>
+                                    <span class="star-input" data-rating="5">★</span>
+                                </div>
+                                <input type="hidden" id="selectedRating" value="0">
+                            </div>
+                            <div class="form-group-review">
+                                <label for="reviewComment">Your Review:</label>
+                                <textarea id="reviewComment" class="review-comment" placeholder="Share your experience with this professional..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Review</button>
+                        </form>
+                    </div>
+
+                    <!-- Reviews List -->
+                    <div class="reviews-list" id="reviewsList">
+                        <p style="text-align: center; color: var(--text-light);">No reviews yet. Be the first to review!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Bookings Page -->
+    <div id="bookings-page" class="page">
+        <div class="container">
+            <h1>My Bookings</h1>
+            <div id="bookingsContainer" class="bookings-grid">
+                <p class="no-data">No bookings yet</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toastContainer"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <!-- Footer Brand Section -->
+            <div class="footer-section footer-brand">
+                <div class="footer-logo">
+                    <i class="fas fa-wrench"></i> Service Finder
+                </div>
+                <p class="footer-address">
+                    789 Service Street<br>
+                    Mumbai, Maharashtra<br>
+                    400001, India
+                </p>
+                <div class="footer-socials">
+                    <a href="#" target="_blank" class="social-link"><i class="fab fa-facebook"></i></a>
+                    <a href="#" target="_blank" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" target="_blank" class="social-link"><i class="fab fa-youtube"></i></a>
+                    <a href="#" target="_blank" class="social-link"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+
+            <!-- Policy Section -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Policy</h4>
+                <ul class="footer-links">
+                    <li><a href="#" onclick="openPolicy('privacy', event)">Privacy Policy</a></li>
+                    <li><a href="#" onclick="openPolicy('terms', event)">Terms & Conditions</a></li>
+                    <li><a href="#" onclick="openPolicy('support', event)">Support Policy</a></li>
+                    <li><a href="#" onclick="openPolicy('cancellation', event)">Cancellation Policy</a></li>
+                    <li><a href="#" onclick="openPolicy('cookie', event)">Cookie Policy</a></li>
+                </ul>
+            </div>
+
+            <!-- Company Section -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Company</h4>
+                <ul class="footer-links">
+                    <li><a href="#" onclick="scrollToTop()">About Us</a></li>
+                    <li><a href="#" onclick="scrollToTop()">Contact Us</a></li>
+                    <li><a href="#" onclick="scrollToTop()">Careers</a></li>
+                    <li><a href="#" onclick="scrollToTop()">Blog</a></li>
+                    <li><a href="#" onclick="scrollToTop()">Sustainability</a></li>
+                </ul>
+            </div>
+
+            <!-- Apps Section -->
+            <div class="footer-section">
+                <h4 class="footer-heading">Apps</h4>
+                <ul class="footer-links">
+                    <li><a href="#" target="_blank">iOS App</a></li>
+                    <li><a href="#" target="_blank">Android App</a></li>
+                    <li><a href="#" target="_blank">Web App</a></li>
+                    <li><a href="#" target="_blank">Download</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <p>&copy; 2026 Service Finder Ltd | All rights reserved | GST Registration: SF123456789</p>
+        </div>
+    </footer>
+
+    <!-- Policy Modal -->
+    <div id="policyModal" class="policy-modal">
+        <div class="policy-modal-content">
+            <button class="policy-close" onclick="closePolicy()">&times;</button>
+            <div id="policyContent"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
